@@ -20,14 +20,12 @@ object SQLCensusDataA {
     println("Fraction > 50K in 50+ age group = " + over50years.filter(_.incomeOver50).count() / over50years.count().toDouble)
     val married = data.filter(_.maritalStatus == "Married-civ-spouse")
     println("Fraction > 50K in married group = " + married.filter(_.incomeOver50).count() / married.count().toDouble)
-    println("Median age = " + data.sort("age"))//.zipWithIndex().filter(_._2 == n / 2).collect()(0)._1.age)
+    println("Quartile age = " + data.map(_.age).stat.approxQuantile("value", Array(0.25, 0.5, 0.75), 0.1).mkString(", "))
     println("Fraction by race")
-//    val raceCounts = data.map(cd => cd.race -> cd).aggregateByKey((0, 0))(
-//      { case ((tot, over), cd) => (tot + 1, over + (if (cd.incomeOver50) 1 else 0)) },
-//      { case ((tot1, over1), (tot2, over2)) => (tot1 + tot2, over1 + over2) }).collect()
-//    for ((race, (tot, over)) <- raceCounts) {
-//      println(s"  $race = ${over / tot.toDouble}")
-//    }
+    val raceCounts = data.groupByKey(_.race).
+      agg(count("incomeOver50"), count("incomeOver50"))
+      // TODO - figure out how to count on when.
+    raceCounts.collect().foreach(row => println(row))
     println("Fraction work more than 40 hrs/week = " + data.filter(_.hoursPerWeek > 40).count() / n.toDouble)
 
     spark.stop()
