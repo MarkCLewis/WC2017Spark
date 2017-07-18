@@ -24,5 +24,4 @@ object CensusData {
       p(6), p(7), p(8), p(9), p(10).toInt, p(11).toInt, p(12).toInt, p(13),
       p(14) == ">50K")
   }
-
 }

@@ -7,7 +7,7 @@ import org.apache.spark.rdd.RDD._
 
 object RDDCensusData {
   def main(args: Array[String]): Unit = {
-    val conf = new SparkConf().setAppName("Sample Application").setMaster("local[2]")
+    val conf = new SparkConf().setAppName("Sample Application").setMaster("local[*]")
     val sc = new SparkContext(conf)
 
     val csvFileLines = sc.textFile("data/adult.csv", 2).mapPartitionsWithIndex { (idx, iter) => if (idx == 0) iter.drop(1) else iter }

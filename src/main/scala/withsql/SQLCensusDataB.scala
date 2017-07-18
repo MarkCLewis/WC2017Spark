@@ -4,9 +4,9 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 
-object SQLCensusData {
+object SQLCensusDataB {
   def main(args: Array[String]): Unit = {
-    val spark = SparkSession.builder.appName("Simple Application").master("local[2]").getOrCreate()
+    val spark = SparkSession.builder.appName("Simple Application").master("local[*]").getOrCreate()
     import spark.implicits._
     
     val schema = StructType(Array(
@@ -26,7 +26,7 @@ object SQLCensusData {
       StructField("nativeCountry", StringType),    
       StructField("income", StringType)    
     ))
-    val data = spark.read.schema(schema).csv("data/adult.csv").cache()
+    val data = spark.read.schema(schema).option("header", true).csv("data/adult.csv").cache()
 
     val n = data.count()
     println("Fraction > 50K = " + data.filter('income === ">50K").count() / n.toDouble)
