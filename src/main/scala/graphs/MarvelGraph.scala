@@ -8,6 +8,9 @@ import org.apache.spark.graphx.lib.ShortestPaths
 
 case class MarvelNode(name: String, ntype: String)
 
+/**
+ * Demonstrating the use of GraphX on the Marvel Social Netowrk from https://www.kaggle.com/csanhueza/the-marvel-universe-social-network
+ */
 object MarvelGraph {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("Graph Application").setMaster("local[*]")
